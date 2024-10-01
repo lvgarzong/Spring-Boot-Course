@@ -11,7 +11,6 @@ package com.example.taskmanager.service;
 import com.example.taskmanager.entity.Task;
 import com.example.taskmanager.repository.TaskRepository;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,28 +19,15 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public List<Task> findAll() {
+    public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
-    public Task save(Task task) {
+    public Task saveTask(Task task) {
         return taskRepository.save(task);
     }
 
-    public Optional<Task> findById(Long id) {
-        return taskRepository.findById(id);
-    }
-
-    public Task update(Long id, Task taskDetails) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
-        task.setDescription(taskDetails.getDescription());
-        task.setUser(taskDetails.getUser());
-        task.setCategory(taskDetails.getCategory());
-        return taskRepository.save(task);
-    }
-
-    public void delete(Long id) {
+    public void deleteTask(Long id) {
         taskRepository.deleteById(id);
     }
-
 }

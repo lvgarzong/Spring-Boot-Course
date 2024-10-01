@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controller;
+package com.example.taskmanager.controller;
 
 import com.example.taskmanager.entity.Task;
 import com.example.taskmanager.service.TaskService;
@@ -22,34 +22,32 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author lvgarzon
  */
+
 @RestController
-@RequestMapping("/tasks")
+@RequestMapping("/api/tasks")
 public class TaskController {
 
     @Autowired
     private TaskService taskService;
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')") 
-    public List<Task> getAll() {
-        return taskService.findAll();
+    public List<Task> getAllTasks() {
+        return taskService.getAllTasks();
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')") 
-    public Task create(@RequestBody Task task) {
-        return taskService.save(task);
+    public Task createTask(@RequestBody Task task) {
+        return taskService.saveTask(task);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')") 
-    public Task update(@PathVariable Long id, @RequestBody Task task) {
-        return taskService.update(id, task);
+    public Task updateTask(@PathVariable Long id, @RequestBody Task task) {
+        task.setId(id);
+        return taskService.saveTask(task);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')") 
-    public void delete(@PathVariable Long id) {
-        taskService.delete(id);
+    public void deleteTask(@PathVariable Long id) {
+        taskService.deleteTask(id);
     }
 }

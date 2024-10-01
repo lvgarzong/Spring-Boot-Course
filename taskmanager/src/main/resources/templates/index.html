@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Manager</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Create Task</h1>
+    <form id="taskForm">
+        <input type="text" name="description" placeholder="Description" required>
+        <input type="text" name="user" placeholder="User" required>
+        <input type="text" name="category" placeholder="Category" required>
+        <button type="submit">Add Task</button>
+    </form>
+    
+    <script>
+        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+        $('#taskForm').on('submit', function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: '/api/tasks',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    description: $("input[name='description']").val(),
+                    user: $("input[name='user']").val(),
+                    category: $("input[name='category']").val()
+                }),
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                success: function() {
+                    alert('Task added!');                    
+                },
+                error: function() {
+                    alert('Error adding task');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
